@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid'
 interface Props {
   patients: Patient[];
   addPatient: (data: DraftPatient) => void;
+  deletePatient: (id: Patient["id"]) => void;
 }
 
 const createPatient = (data: DraftPatient): Patient => {
@@ -19,6 +20,11 @@ export const usePatientStore = create<Props>((set) => ({
 
     set((state) => ({
       patients: [...state.patients, newPatient]
+    }))
+  },
+  deletePatient: (id) => {
+    set(state => ({
+      patients: state.patients.filter(pat => pat.id !== id)
     }))
   }
 }));
