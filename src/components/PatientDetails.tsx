@@ -9,6 +9,7 @@ interface Props {
 export function PatientDetails({ patient }: Props) {
 
   const deletePatient = usePatientStore(state => state.deletePatient);
+  const getPatientById = usePatientStore(state => state.getPatientById);
 
   return (
     <>
@@ -27,7 +28,9 @@ export function PatientDetails({ patient }: Props) {
         </div>
       </div>
       <div className="border-y-2 flex">
-        <button className="w-1/2 p-3 font-semibold flex items-center justify-center gap-2
+        <button
+          onClick={() => getPatientById(patient.id)}
+          className="w-1/2 p-3 font-semibold flex items-center justify-center gap-2
         hover:bg-[#f5722f] transition-colors cursor-pointer">
           <Download /> Editar
         </button>
