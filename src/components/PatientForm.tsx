@@ -1,8 +1,10 @@
 import { useForm } from 'react-hook-form';
-import { ErrorsMessage } from './ErrorsMessage';
-import type { DraftPatient } from '../types';
-import { usePatientStore } from '../store';
 import { useEffect } from 'react';
+import { ErrorsMessage } from './ErrorsMessage';
+import { usePatientStore } from '../store';
+import type { DraftPatient } from '../types';
+import { toast } from 'react-toastify';
+
 
 export default function PatientForm() {
 
@@ -31,8 +33,10 @@ export default function PatientForm() {
 
     if (activeId) {
       updatePatient(data)
+      toast.success('Editado Correctamente')
     } else {
       addPatient(data);
+      toast.success('Creado Correctamente')
     }
 
     reset();

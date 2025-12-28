@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { v4 as uuid } from 'uuid';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 import type { DraftPatient, Patient } from './types';
 
 interface Props {
@@ -17,32 +17,35 @@ const createPatient = (data: DraftPatient): Patient => {
 }
 
 export const usePatientStore = create<Props>()(
-  devtools((set) => ({
-    patients: [],
-    activeId: '',
-    addPatient: (data) => {
+  devtools(
+    persist((set) => ({
+      patients: [],
+      activeId: '',
+      addPatient: (data) => {
 
-      const newPatient = createPatient(data);
+        const newPatient = createPatient(data);
 
-      set((state) => ({
-        patients: [...state.patients, newPatient]
-      }))
-    },
-    deletePatient: (id) => {
-      set(state => ({
-        patients: state.patients.filter(pat => pat.id !== id)
-      }))
-    },
-    getPatientById: (id) => {
-      set(() => ({
-        activeId: id
-      }))
-    },
-    updatePatient: (data) => {
-      set((state) => ({
-        patients: state.patients.map(patient => patient.id === state.activeId ? { id: state.activeId, ...data } : patient),
-        activeId: ''
-      }))
-    }
-  })
+        set((state) => ({
+          patients: [...state.patients, newPatient]
+        }))
+      },
+      deletePatient: (id) => {
+        set(state => ({
+          patients: state.patients.filter(pat => pat.id !== id)
+        }))
+      },
+      getPatientById: (id) => {
+        set(() => ({
+          activeId: id
+        }))
+      },
+      updatePatient: (data) => {
+        set((state) => ({
+          patients: state.patients.map(patient => patient.id === state.activeId ? { id: state.activeId, ...data } : patient),
+          activeId: ''
+        }))
+      }
+    }), {
+      name: 'patient-storage'
+    })
   ));

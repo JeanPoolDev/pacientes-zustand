@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { Download, Edit } from "../icons";
 import { usePatientStore } from "../store";
 import type { Patient } from "../types";
@@ -10,6 +11,12 @@ export function PatientDetails({ patient }: Props) {
 
   const deletePatient = usePatientStore(state => state.deletePatient);
   const getPatientById = usePatientStore(state => state.getPatientById);
+
+  const handleDelete = () => {
+    if (!confirm('¿Estás seguro de eliminar esta acción?')) return;
+    deletePatient(patient.id);
+    toast.error('Eliminado Correctamente')
+  }
 
   return (
     <>
@@ -35,7 +42,7 @@ export function PatientDetails({ patient }: Props) {
           <Download /> Editar
         </button>
         <button
-          onClick={() => deletePatient(patient.id)}
+          onClick={handleDelete}
           className="w-1/2 p-3 font-semibold flex items-center justify-center gap-2
         hover:bg-[#f5722f] transition-colors cursor-pointer">
           <Edit /> Eliminar
